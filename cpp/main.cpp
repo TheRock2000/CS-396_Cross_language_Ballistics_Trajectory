@@ -15,10 +15,10 @@ void writeCSV(const std::vector<Point> &points, const std::string &path){
         return;
     }
 
-    out << "t,x,y\n";
+    out << "x,y,time\n";
     out << std::fixed << std::setprecision(6);
     for (const auto &p : points){
-        out << p.time << "," << p.x << "," << p.y << "\n";
+        out << p.x << "," << p.y << "," << p.time << "\n";
     }
 }
 

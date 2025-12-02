@@ -50,7 +50,7 @@ std::vector<Point> calculateTrajectory(double v0, double angleRad, double g, dou
 
         if(yPosition < 0) yPosition = 0; //Clamp to ground level
 
-        trajectoryPoints.push_back({currentTime,xPosition,yPosition});
+        trajectoryPoints.push_back({xPosition, yPosition, currentTime});
     }
 
     return trajectoryPoints;

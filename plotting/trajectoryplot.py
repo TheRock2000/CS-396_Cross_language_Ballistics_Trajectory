@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # store csv
-CSV_PATH = "data/trajectory.csv"
+CSV_PATH = "../data/trajectory.csv"
 
 # loads trajectory from given path.
 def load_trajectory(path):

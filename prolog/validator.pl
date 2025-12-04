@@ -23,24 +23,32 @@ theoretical_range(V0, AngleDeg, Range) :-
 validate_solution(Result) :-
 
     % Extract solution parameters
-    solution(cartridge(Name), v0(V0), range(RGiven), angle_deg(AngleDeg)),
+    solution(cartridge(Name), v0(V0), range(RGiven), angle_deg(Angle), status(Status)),
     % Validate the solution
     % Check angle validity
-    (   AngleDeg =< 0.0
-    ->  Result = reject(invalid_angle_non_positive(AngleDeg))
-    ;   AngleDeg >= 45.0
-    ->  Result = reject(invalid_angle_too_high(AngleDeg))
-    % check if arc sine argument is valid
-    ;   g(G),
-        S is G * RGiven / (V0 * V0),
-        (   S > 1.0
-        ->  Result = reject(no_real_solution_for_range(RGiven))
-        ;   theoretical_range(V0, AngleDeg, RComputed),
-            Diff is abs(RComputed - RGiven),
-            Tolerance is max(0.01 * RGiven, 0.1),  % 1% or at least 0.1m
-            (   Diff =< Tolerance
-            ->  Result = ok
-            ;   Result = reject(range_mismatch(RGiven, RComputed, Diff))
+    % If angle is 'none', then no physics solution
+    (   Angle == none
+        ->  Result = reject(no_physics_solution(Status))
+        ;   Angle = AngleDeg,
+    (
+        % angle must be positive and less than 45 degrees for low-angle solution
+        AngleDeg =< 0.0
+        ->  Result = reject(invalid_angle_non_positive(AngleDeg))
+        ;   AngleDeg >= 45.0
+        ->  Result = reject(invalid_angle_too_high(AngleDeg))
+        % calculate sine value for range equation and gravity
+        ;   g(G),
+            S is G * RGiven / (V0 * V0),
+            % check if sine value is in valid range [-1, 1]
+            (   S > 1.0
+                ->  Result = reject(no_real_solution_for_range(RGiven))
+                ;   theoretical_range(V0, AngleDeg, RComputed),
+                Diff is abs(RComputed - RGiven),
+                Tolerance is max(0.01 * RGiven, 0.1),  % 1% or at least 0.1m
+                (   Diff =< Tolerance
+                    ->  Result = ok
+                    ;   Result = reject(range_mismatch(RGiven, RComputed, Diff))
+                )
             )
         )
     ),
@@ -48,7 +56,10 @@ validate_solution(Result) :-
     format('Validating solution for cartridge: ~w~n', [Name]),
     format('  v0            = ~2f m/s~n', [V0]),
     format('  given range   = ~2f m~n', [RGiven]),
-    format('  angle (deg)   = ~2f~n', [AngleDeg]),
+    (   Angle == none ->
+        writeln('  angle         = none (no physics solution)')
+    ;   format('  angle (deg)   = ~2f~n', [Angle])
+    ),
     (   Result = ok
     ->  writeln('Result: OK (solution is logically consistent).')
     ;   format('Result: REJECT (~w)~n', [Result])

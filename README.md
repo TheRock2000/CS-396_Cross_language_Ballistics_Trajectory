@@ -5,7 +5,7 @@ A multi-language ballistics trajectory system that calculates the angle a shoote
 
 ## Description 
 
-The software uses a simplified projectile-motion model with a constant gravity and no air resistance assumption. After users choose a cartridge from a preset list and enter a target distance, the program determines the low-angle firing solution, calculates the trajectory points, and outputs them to two files trajectory.csv and solution.pl.
+The software uses a simplified projectile-motion model with constant gravity, no air resistance, and the assumption that the target is at the same height as the shooter. After users choose a cartridge from a preset list and enter a target distance, the program determines the low-angle firing solution, calculates the trajectory points, and outputs them to two files trajectory.csv and solution.pl.
 
 ## Getting Started
 
@@ -29,6 +29,3 @@ The software uses a simplified projectile-motion model with a constant gravity a
 - Chris Son (cks@nau.edu)
 - Vikram Singh (vs679@nau.edu)
 - Rique Yazzie (rty7@nau.edu)
-
-## License
-This project is licensed under the MIT License - see the ___ file for details.  

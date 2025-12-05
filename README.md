@@ -5,7 +5,7 @@ A multi-language ballistics trajectory system that calculates the angle a shoote
 
 ## Description 
 
-The software uses a simplified projectile-motion model with a constant gravity and no air resistance assumption. After users choose a cartridge from a preset list and enter a target distance, the program determines the low-angle firing solution, calculates the trajectory points, and outputs them to two files trajectory.csv and solution.pl. C++ handles the numerical calculations, Prolog checks the results against defined logical constraints, and Python uses matplotlib to plot the projectile path.
+The software uses a simplified projectile-motion model with a constant gravity and no air resistance assumption. After users choose a cartridge from a preset list and enter a target distance, the program determines the low-angle firing solution, calculates the trajectory points, and outputs them to two files trajectory.csv and solution.pl.
 
 ## Getting Started
 

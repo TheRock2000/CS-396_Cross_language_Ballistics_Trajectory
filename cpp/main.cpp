@@ -109,7 +109,7 @@ int main(){
         return 1;
     }
 
-    const Cartridge &c = cartridges[choice - 1];
+    const Cartridge &chosenCartridge = cartridges[choice - 1];
 
     //3. input target range
     double range;
@@ -126,11 +126,11 @@ int main(){
 
     //call physics function to solve for angle, save result in angleRad using pointers
     //produces csv file if solution found and is physically valid
-    if(!solveLowAngle(c.muzzleVelocity, range, GRAVITY, angleRad)){
+    if(!solveLowAngle(chosenCartridge.muzzleVelocity, range, GRAVITY, angleRad)){
         std::cerr << "No physically valid low-angle solution for this cartridge and range.\n";
         std::cerr << "Run Prolog to validate the solution.\n";
         //still write a solution.pl indicating failure
-        writeSolutionPL_NoPhysics(c, range, SOLUTION_PL_PATH);
+        writeSolutionPL_NoPhysics(chosenCartridge, range, SOLUTION_PL_PATH);
         return 0;   //end main
     }
     else{
@@ -139,13 +139,13 @@ int main(){
         std::cout << "Firing solution (no drag): angle = " << angleDeg << " degrees.\n";
 
         // Compute and write trajectory, steps in 200 increments
-        auto points = calculateTrajectory(c.muzzleVelocity, angleRad, GRAVITY, 200);
+        auto points = calculateTrajectory(chosenCartridge.muzzleVelocity, angleRad, GRAVITY, 200);
 
         //write CSV file to path
         writeCSV(points, TRAJECTORY_DATA_PATH);
 
         // Write Prolog solution file
-        writeSolutoinPL(c, range, angleRad, SOLUTION_PL_PATH);
+        writeSolutoinPL(chosenCartridge, range, angleRad, SOLUTION_PL_PATH);
         std::cout << "Trajectory written to ../data/trajectory.csv\n";
         std::cout << "Solution written to ../prolog/solution.pl\n";
         std::cout << "Now run Prolog to validate the solution.\n";

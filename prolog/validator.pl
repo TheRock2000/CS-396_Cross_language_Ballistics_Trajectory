@@ -38,9 +38,9 @@ validate_solution(Result) :-
         ->  Result = reject(invalid_angle_too_high(AngleDeg))
         % calculate sine value for range equation and gravity
         ;   g(G),
-            S is G * RGiven / (V0 * V0),
+            Sine is G * RGiven / (V0 * V0),
             % check if sine value is in valid range [-1, 1]
-            (   S > 1.0
+            (   Sine > 1.0
                 ->  Result = reject(no_real_solution_for_range(RGiven))
                 ;   theoretical_range(V0, AngleDeg, RComputed),
                 Diff is abs(RComputed - RGiven),

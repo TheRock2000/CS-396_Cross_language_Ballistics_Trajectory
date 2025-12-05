@@ -1,1 +1,0 @@
-#include "prolog_bridge.h"

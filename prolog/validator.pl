@@ -16,7 +16,7 @@ deg_to_rad(Deg, Rad) :-
 theoretical_range(V0, AngleDeg, Range) :-
     g(G),
     deg_to_rad(AngleDeg, A),
-    Range is (V0 * V0 * sin(2 * A)) / G.
+    Range is (V0 * V0 * sin(2 * A)) / G.    % find theoretical range based off angle and velocity
 
 % validate_solution(-Result)
 % Result = ok ; Result = reject(Reason)
@@ -42,9 +42,9 @@ validate_solution(Result) :-
             % check if sine value is in valid range [-1, 1]
             (   Sine > 1.0
                 ->  Result = reject(no_real_solution_for_range(RGiven))
-                ;   theoretical_range(V0, AngleDeg, RComputed),
-                Diff is abs(RComputed - RGiven),
-                Tolerance is max(0.01 * RGiven, 0.1),  % 1% or at least 0.1m
+                ;   theoretical_range(V0, AngleDeg, RComputed), % RComputed is the prolog calculated range
+                Diff is abs(RComputed - RGiven),        % tolerance check between the given range and computed range
+                Tolerance is max(0.01 * RGiven, 0.1),   % 1% or at least 0.1m
                 (   Diff =< Tolerance
                     ->  Result = ok
                     ;   Result = reject(range_mismatch(RGiven, RComputed, Diff))
